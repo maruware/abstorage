@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha --reporter spec test/*.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/maruware/abstorage/issues"
   },
-  "homepage": "https://github.com/maruware/abstorage#readme"
+  "homepage": "https://github.com/maruware/abstorage#readme",
+  "dependencies": {
+    "aws-sdk": "^2.150.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1"
+  }
 }
