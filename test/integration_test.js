@@ -10,9 +10,9 @@ describe('IntegrationTest', function () {
 
     const key = 'test.txt'
     const data = 'Hello, world!'
-    
-    await storage.put({key, body: data})
-    const res = await storage.get({ key })
+
+    await storage.put(key, data)
+    const res = await storage.get(key)
     assert.equal(res.data, data)
   })
 })
