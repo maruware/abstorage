@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/maruware/abstorage#readme",
   "dependencies": {
-    "aws-sdk": "^2.150.0"
+    "aws-sdk": "^2.150.0",
+    "mkdirp": "^0.5.1"
   },
   "engines": {
     "node": ">=8.0.0"
