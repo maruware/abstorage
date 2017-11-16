@@ -7,6 +7,10 @@ const use = (provider) => {
 }
 
 const storage = (name) => {
+  const provider = providers[name]
+  if (!provider) {
+    throw new Error(`provider[${name}] is undefined`)
+  }
   return providers[name].storage
 }
 
