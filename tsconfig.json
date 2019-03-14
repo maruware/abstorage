@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "lib": ["es2017"],
+      "module": "commonjs",
+      "esModuleInterop": true,
+      "declaration": true,
+      "outDir": "./dist",
+      "strict": false,
+      "types": [
+        "node",
+        "mocha"
+      ],
+    }
+  }

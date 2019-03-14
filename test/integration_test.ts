@@ -1,8 +1,10 @@
-const abstorage = require('../')
-const {assert} = require('chai')
+/* eslint-env mocha */
 
-describe('IntegrationTest', function () {
-  it('Simple usage', async function () {
+import * as abstorage from '../'
+import { assert } from 'chai'
+
+describe('IntegrationTest', function() {
+  it('Simple usage', async function() {
     const { LocalProvider } = abstorage.providers
 
     abstorage.use(new LocalProvider({ dst: '/tmp' }))

@@ -1,9 +1,8 @@
-const path = require('path')
-
-const BaseProvider = require('../base/provider')
-const Storage = require('./storage')
+import BaseProvider from '../base/provider'
+import Storage from './storage'
 
 class S3Provider extends BaseProvider {
+  private _storage: Storage
   constructor(options) {
     super()
     this._storage = new Storage(options)
@@ -18,4 +17,4 @@ class S3Provider extends BaseProvider {
   }
 }
 
-module.exports = S3Provider
+export default S3Provider

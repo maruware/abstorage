@@ -1,12 +1,10 @@
-const Providers = require('./lib/providers')
+import { S3Provider, LocalProvider } from './lib/providers'
 
-let providers = {}
-
-const use = (provider) => {
+export const use = provider => {
   providers[provider.name] = provider
 }
 
-const storage = (name) => {
+export const storage = name => {
   const provider = providers[name]
   if (!provider) {
     throw new Error(`provider[${name}] is undefined`)
@@ -14,4 +12,4 @@ const storage = (name) => {
   return providers[name].storage
 }
 
-module.exports = { use, providers: Providers, storage }
+export const providers = { S3Provider, LocalProvider }
