@@ -2,7 +2,7 @@
   "name": "abstorage",
   "version": "0.0.2",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "postinstall": "postinstall-build dist",
