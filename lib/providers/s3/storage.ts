@@ -1,7 +1,8 @@
 import AWS from 'aws-sdk'
-import BaseStorage from '../base/storage'
+import { Omit } from 'type-fest'
+import BaseStorage, { Body } from '../base/storage'
 
-interface S3StorageArgs extends AWS.S3.ClientConfiguration {
+export interface S3StorageArgs extends AWS.S3.ClientConfiguration {
   bucket: string
 }
 class S3Storage extends BaseStorage {
@@ -14,17 +15,25 @@ class S3Storage extends BaseStorage {
     this.service = new AWS.S3(args)
   }
 
-  put(key, body, options) {
-    const param = Object.assign(
-      {},
-      { Bucket: this.bucket, Key: key, Body: body },
-      options
-    )
+  put(
+    key: string,
+    body: Body,
+    options: Omit<AWS.S3.Types.PutObjectRequest, 'Bucket' | 'Key' | 'Body'>
+  ) {
+    const param = {
+      ...options,
+      Bucket: this.bucket,
+      Key: key,
+      Body: body
+    }
     return this.service.putObject(param).promise()
   }
 
-  async get(key, options) {
-    const param = Object.assign({}, { Bucket: this.bucket, Key: key }, options)
+  async get(
+    key: string,
+    options: Omit<AWS.S3.GetObjectRequest, 'Bucket' | 'Key'>
+  ) {
+    const param = { ...options, Bucket: this.bucket, Key: key }
     const res = await this.service.getObject(param).promise()
     return { data: res.Body }
   }

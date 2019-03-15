@@ -1,11 +1,9 @@
-abstract class BaseStorage {
-  put(key, body, options) {
-    throw new Error('Not implemented')
-  }
+import { S3 } from 'aws-sdk'
 
-  get(key, options) {
-    throw new Error('Not implemented')
-  }
+export type Body = S3.Body
+abstract class Storage {
+  abstract put(key: string, body: Body, options?: any): Promise<any>
+  abstract get(key: string, options?: any): Promise<any>
 }
 
-export default BaseStorage
+export default Storage

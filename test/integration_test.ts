@@ -1,20 +1,18 @@
 /* eslint-env mocha */
 
-import * as abstorage from '../'
+import { LocalStorage, Storage } from '../index'
 import { assert } from 'chai'
 
 describe('IntegrationTest', function() {
   it('Simple usage', async function() {
-    const { LocalProvider } = abstorage.providers
-
-    abstorage.use(new LocalProvider({ dst: '/tmp' }))
-    const storage = abstorage.storage('local')
+    const storage: Storage = new LocalStorage({ dst: '/tmp' })
 
     const key = 'test.txt'
     const data = 'Hello, world!'
+    const options = {}
 
-    await storage.put(key, data)
+    await storage.put(key, data, options)
     const res = await storage.get(key)
-    assert.equal(res.data, data)
+    assert.equal(res.data.toString(), data)
   })
 })

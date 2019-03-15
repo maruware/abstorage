@@ -7,23 +7,14 @@ Under development.
 
 ## Usage
 
-```js
-const abstorage = require('abstrage')
-const { S3Provider, LocalProvider } = abstorage.providers
+```ts
+const { S3Storage, LocalStorage } = from 'abstrage'
 
-// Local
-abstorage.use(new LocalProvider({dst: 'tmp'}))
-
-// use Environment vars or IAM
-abstorage.use(new S3Provider({bucket: 'some-bucket'))
-// specify property
-abstorage.use(new S3Provider({bucket: 'some-bucket', accessKeyId: 'your_key', secretAccessKey: 'your_secret'}))
-
-let storage = null
+let storage: Storage = null
 if (process.env.NODE_ENV === 'production') {
-  storage = abstorage.storage('s3')
+  storage = new S3Storage({bucket: 'some-bucket'})
 } else {
-  storage = abstorage.storage('local')
+  storage = new LocalStorage({dst: 'tmp'}))
 }
 
 const key = 'awesome/object.jpg'
