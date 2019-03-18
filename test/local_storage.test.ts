@@ -27,7 +27,7 @@ describe('LocalStorage test', function() {
 
     await storage.put(key, data, options)
     const res = await storage.get(key)
-    assert.equal(res.data.toString(), data)
+    assert.equal(res.data.toString('base64'), data.toString('base64'))
   })
 
   it('set host', async function() {

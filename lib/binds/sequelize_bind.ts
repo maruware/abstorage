@@ -1,15 +1,22 @@
 import { Model } from 'sequelize'
 import { Storage } from '../../index'
+import { GetResponse } from '../storages/storage';
+
+export interface StorageData {
+  url: string
+  fetchData(): Promise<GetResponse>
+}
 
 export const bindStorage = <ModelType extends Model>(
   column: keyof ModelType,
   storage: Storage,
   resolveKey: (instance: ModelType) => string
 ) => {
-  const getter = function(this: ModelType) {
+  const getter = function(this: ModelType): StorageData {
     const storageKey = this.getDataValue(column) as unknown
     return {
-      url: storage.resolveUrl(storageKey as string)
+      url: storage.resolveUrl(storageKey as string),
+      fetchData: () => storage.get(storageKey as string)
     }
   }
   const job = new Map<ModelType, () => Promise<void>>()
