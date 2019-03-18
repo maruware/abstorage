@@ -13,11 +13,12 @@ export class User extends Model {
   public icon: any
 }
 
-const { getter, setter, hook } = bindStorage<User>(
-  'iconKey',
+const { getter, setter, hook } = bindStorage<User>({
+  column: 'iconKey',
   storage,
-  user => `users/icon/${user.id}.jpg`
-)
+  contentType: 'image/jpeg',
+  resolveKey: user => `users/icon/${user.id}.jpg`
+})
 
 User.init(
   {
