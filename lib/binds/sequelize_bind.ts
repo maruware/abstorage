@@ -14,13 +14,15 @@ interface BindStorageArg<ModelType extends Model> {
   storage: Storage
   contentType: string | ContentTypeResolver<ModelType>
   resolveKey: ContentKeyResolver<ModelType>
+  preprocess?: (data: Body) => Promise<Body>
 }
 
 export const bindStorage = <ModelType extends Model>({
   column,
   storage,
   contentType,
-  resolveKey
+  resolveKey,
+  preprocess
 }: BindStorageArg<ModelType>) => {
   const getter = function(this: ModelType) {
     const storageKey = this.getDataValue(column) as unknown
@@ -31,10 +33,11 @@ export const bindStorage = <ModelType extends Model>({
     }
   }
   const job = new Map<ModelType, () => Promise<void>>()
-  const setter = async function(this: ModelType, buf: Body) {
+  const setter = async function(this: ModelType, orgData: Body) {
     job.set(this, async () => {
+      let data = preprocess ? await preprocess(orgData) : orgData
       const storageKey = resolveKey(this)
-      await storage.put(storageKey, buf, { ContentType: contentType })
+      await storage.put(storageKey, data, { ContentType: contentType })
       this.setDataValue(column, storageKey as any)
       job.delete(this)
       await this.save()
