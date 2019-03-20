@@ -1,8 +1,9 @@
 import path from 'path'
-import fs from 'fs'
+import fs, { createWriteStream, createReadStream } from 'fs'
 import util from 'util'
 import mkdirp from 'mkdirp'
-import BaseStorage, { Body } from './storage'
+import BaseStorage, { Body, GetDataTypeOption, GetReturn } from './storage'
+import { Stream } from 'stream'
 
 const writeFile = util.promisify(fs.writeFile)
 const readFile = util.promisify(fs.readFile)
@@ -23,12 +24,32 @@ class LocalStorage extends BaseStorage {
   put(key: string, body: Body, options?: any) {
     const filepath = this.objectPath(key)
     mkdirp.sync(path.dirname(filepath))
+    if (body instanceof Stream) {
+      const dst = createWriteStream(filepath)
+      body.pipe(dst)
+      return Promise.resolve()
+    }
     return writeFile(filepath, body)
   }
-
-  async get(key: string, options?: any) {
-    const data = await readFile(this.objectPath(key))
-    return { data }
+  async get(
+    key: string,
+    options?: GetDataTypeOption<'buffer'>
+  ): Promise<GetReturn<Buffer>>
+  async get(
+    key: string,
+    options?: GetDataTypeOption<'stream'>
+  ): Promise<GetReturn<Stream>>
+  async get(
+    key: string,
+    options: GetDataTypeOption<any> = { dataType: 'buffer' }
+  ): Promise<GetReturn<any>> {
+    const filePath = this.objectPath(key)
+    if (options.dataType === 'buffer') {
+      const data = await readFile(filePath)
+      return { data }
+    } else {
+      return { data: createReadStream(filePath) }
+    }
   }
 
   resolveUrl(key: string) {

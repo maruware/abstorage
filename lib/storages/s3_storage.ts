@@ -1,11 +1,17 @@
 import { S3 } from 'aws-sdk'
 import { Omit } from 'type-fest'
-import BaseStorage, { Body } from './storage'
+import BaseStorage, { Body, GetDataTypeOption, GetReturn } from './storage'
+import { Stream } from 'stream'
 
 export interface S3StorageArgs extends S3.ClientConfiguration {
   bucket: string
   host?: string
 }
+
+type PutOptions = Omit<S3.Types.PutObjectRequest, 'Bucket' | 'Key' | 'Body'>
+type GetS3Options = Omit<S3.GetObjectRequest, 'Bucket' | 'Key'>
+type GetOption<T extends 'buffer' | 'stream'> = GetS3Options &
+  GetDataTypeOption<T>
 
 class S3Storage extends BaseStorage {
   private bucket: string
@@ -19,11 +25,7 @@ class S3Storage extends BaseStorage {
     this.service = new S3(rest)
   }
 
-  put(
-    key: string,
-    body: Body,
-    options: Omit<S3.Types.PutObjectRequest, 'Bucket' | 'Key' | 'Body'>
-  ) {
+  put(key: string, body: Body, options: PutOptions) {
     const param = {
       ...options,
       Bucket: this.bucket,
@@ -33,10 +35,28 @@ class S3Storage extends BaseStorage {
     return this.service.putObject(param).promise()
   }
 
-  async get(key: string, options: Omit<S3.GetObjectRequest, 'Bucket' | 'Key'>) {
+  async get(
+    key: string,
+    options?: GetOption<'buffer'>
+  ): Promise<GetReturn<Buffer>>
+  async get(
+    key: string,
+    options?: GetOption<'stream'>
+  ): Promise<GetReturn<Stream>>
+  async get(
+    key: string,
+    { dataType, ...options }: GetOption<any> = {
+      dataType: 'buffer'
+    }
+  ): Promise<GetReturn<any>> {
     const param = { ...options, Bucket: this.bucket, Key: key }
-    const res = await this.service.getObject(param).promise()
-    return { data: res.Body }
+    const req = this.service.getObject(param)
+    if (dataType === 'buffer') {
+      const res = await req.promise()
+      return { data: res.Body }
+    } else {
+      return { data: req.createReadStream() }
+    }
   }
 
   resolveUrl(key: string): string {

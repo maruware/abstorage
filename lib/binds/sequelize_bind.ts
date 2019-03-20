@@ -1,11 +1,6 @@
 import { Model } from 'sequelize'
 import { Storage } from '../../index'
-import { GetResponse } from '../storages/storage'
-
-export interface StorageData {
-  url: string
-  fetchData(): Promise<GetResponse>
-}
+import { Body, GetDataTypeOption } from '../storages/storage'
 
 type ContentTypeResolver<ModelType extends Model> = (
   instance: ModelType
@@ -27,15 +22,16 @@ export const bindStorage = <ModelType extends Model>({
   contentType,
   resolveKey
 }: BindStorageArg<ModelType>) => {
-  const getter = function(this: ModelType): StorageData {
+  const getter = function(this: ModelType) {
     const storageKey = this.getDataValue(column) as unknown
     return {
       url: storage.resolveUrl(storageKey as string),
-      fetchData: () => storage.get(storageKey as string)
+      fetchData: (options?: GetDataTypeOption<'buffer' | 'stream'>) =>
+        storage.get(storageKey as string, options)
     }
   }
   const job = new Map<ModelType, () => Promise<void>>()
-  const setter = async function(this: ModelType, buf: Buffer) {
+  const setter = async function(this: ModelType, buf: Body) {
     job.set(this, async () => {
       const storageKey = resolveKey(this)
       await storage.put(storageKey, buf, { ContentType: contentType })
