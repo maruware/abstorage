@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize'
 import { sequelize } from './connection'
 import { storage } from './storage'
 
-import { bindStorage, StorageData } from '../../lib/binds/sequelize_bind'
+import { bindStorage } from '../../lib/binds/sequelize_bind'
 
 export class User extends Model {
   public id: number
