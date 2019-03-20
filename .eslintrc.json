@@ -20,8 +20,10 @@
         "semi": false
       }
     ],
-    "yoda": 0,
-    "no-unused-vars": 1
+    "yoda": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-dupe-class-members": "off"
   },
   "globals": {
     "fetch": false
