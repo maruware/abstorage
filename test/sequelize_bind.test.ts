@@ -30,7 +30,7 @@ describe('Bind Sequelize test', function() {
     assert.equal(data.toString('base64'), image.toString('base64'))
   })
 
-  it.only('preprocess', async function() {
+  it('preprocess', async function() {
     const name = 'takashi'
     const icon = readFileSync(path.join('test', 'data', 'user.jpg'))
 
