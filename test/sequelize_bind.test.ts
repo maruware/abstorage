@@ -62,4 +62,23 @@ describe('Bind Sequelize test', function() {
     let { data } = await user.icon.fetchData({ dataType: 'stream' })
     assert.isTrue(data instanceof Stream)
   })
+
+  it('update data', async function() {
+    const name = 'takashi'
+    let icon = createReadStream(path.join('test', 'data', 'user.jpg'))
+    let user1 = new User({ name, icon })
+    await user1.save()
+
+    const iconUrl1 = user1.icon.url
+    statSync(storage.objectPath(user1.iconKey))
+
+    icon = createReadStream(path.join('test', 'data', 'sample.png'))
+    await user1.update({ icon })
+    const iconUrl2 = user1.icon.url
+    assert.notEqual(iconUrl2, iconUrl1)
+
+    const user2 = await User.findOne({ where: { id: user1.id } })
+
+    assert.equal(user2.icon.url, iconUrl2)
+  })
 })
