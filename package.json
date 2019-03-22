@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "postinstall": "postinstall-build dist",
+    "release": "./release.sh",
     "test": "mocha -r ts-node/register --reporter spec test/*.ts"
   },
   "repository": {
