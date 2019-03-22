@@ -27,7 +27,10 @@ class LocalStorage extends BaseStorage {
     if (body instanceof Stream) {
       const dst = createWriteStream(filepath)
       body.pipe(dst)
-      return Promise.resolve()
+      return new Promise((resolve, reject) => {
+        dst.on('close', resolve)
+        dst.on('error', reject)
+      })
     }
     return writeFile(filepath, body)
   }
