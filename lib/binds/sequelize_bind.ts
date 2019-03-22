@@ -33,7 +33,7 @@ export const bindStorage = <ModelType extends Model>({
     }
   }
   const job = new Map<ModelType, () => Promise<void>>()
-  const setter = async function(this: ModelType, orgData: Body) {
+  const setter = function(this: ModelType, orgData: Body) {
     job.set(this, async () => {
       let data = preprocess ? await preprocess(orgData) : orgData
       const storageKey = resolveKey(this)
