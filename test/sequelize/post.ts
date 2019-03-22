@@ -16,7 +16,7 @@ const { getter, setter, hook } = bindStorage<Post>({
   column: 'imageKey',
   storage,
   contentType: 'image/png',
-  resolveKey: post => `posts/image/${post.id}.png`
+  resolveKey: post => `posts/image/${post.id}_${Date.now()}.png`
 })
 
 Post.init(

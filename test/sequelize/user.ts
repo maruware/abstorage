@@ -19,7 +19,7 @@ const { getter, setter, hook } = bindStorage<User>({
   column: 'iconKey',
   storage,
   contentType: 'image/jpeg',
-  resolveKey: user => `users/icon/${user.id}.jpg`,
+  resolveKey: user => `users/icon/${user.id}_${Date.now()}.jpg`,
   preprocess: async data => {
     const pipeline = sharp()
       .resize(100, 100)
