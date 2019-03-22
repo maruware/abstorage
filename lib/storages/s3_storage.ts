@@ -32,7 +32,7 @@ class S3Storage extends BaseStorage {
       Key: key,
       Body: body
     }
-    return this.service.putObject(param).promise()
+    return this.service.upload(param).promise()
   }
 
   async get(

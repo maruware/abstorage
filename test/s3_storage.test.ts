@@ -9,7 +9,7 @@ import { Stream } from 'stream'
 
 describe('S3Storage test', function() {
   beforeEach(() => {
-    AWS.mock('S3', 'putObject', (params: any, callback: any) => {
+    AWS.mock('S3', 'upload', (params: any, callback: any) => {
       callback(null, 'success')
     })
     AWS.mock('S3', 'getObject', 'success')
