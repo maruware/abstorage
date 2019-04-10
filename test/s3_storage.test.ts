@@ -1,8 +1,7 @@
-/* eslint-env mocha */
+/* eslint-env jest */
 import AWS from 'aws-sdk-mock'
 
 import { S3Storage, Storage } from '../index'
-import { assert } from 'chai'
 import { readFileSync, createReadStream } from 'fs'
 import { join } from 'path'
 import { Stream } from 'stream'
@@ -62,7 +61,7 @@ describe('S3Storage test', function() {
     await storage.put(key, data, options)
 
     const res = await storage.get(key, { dataType: 'stream' })
-    assert.isTrue(res.data instanceof Stream)
+    expect(res.data).toBeInstanceOf(Stream)
   })
 
   it('Set host', async function() {
@@ -75,7 +74,7 @@ describe('S3Storage test', function() {
     const data = 'Hello, world!'
     await storage.put(key, data)
     const url = storage.resolveUrl(key)
-    assert.equal(url, 'http://my-site.example.com/test.txt')
+    expect(url).toBe('http://my-site.example.com/test.txt')
   })
 
   it('resolve s3 default url', async function() {

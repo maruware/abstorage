@@ -12,11 +12,10 @@
     "strict": false,
     "types": [
       "node",
-      "mocha"
-    ],
+      "jest"
+    ]
   },
   "exclude": [
-    "test/*",
     "dist/*"
   ]
 }

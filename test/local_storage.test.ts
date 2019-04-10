@@ -1,7 +1,6 @@
-/* eslint-env mocha */
+/* eslint-env jest */
 
 import { LocalStorage, Storage } from '../index'
-import { assert } from 'chai'
 import { readFileSync, createReadStream } from 'fs'
 import { join } from 'path'
 import { Stream } from 'stream'
@@ -16,7 +15,7 @@ describe('LocalStorage test', function() {
 
     await storage.put(key, data, options)
     const res = await storage.get(key)
-    assert.equal(res.data.toString(), data)
+    expect(res.data.toString()).toBe(data)
   })
 
   it('Put binary buffer', async function() {
@@ -28,7 +27,7 @@ describe('LocalStorage test', function() {
 
     await storage.put(key, data, options)
     const res = await storage.get(key)
-    assert.equal(res.data.toString('base64'), data.toString('base64'))
+    expect(res.data.toString('base64')).toBe(data.toString('base64'))
   })
 
   it('Put binary stream', async function() {
@@ -53,7 +52,7 @@ describe('LocalStorage test', function() {
     await storage.put(key, data, options)
 
     const res = await storage.get(key, { dataType: 'stream' })
-    assert.isTrue(res.data instanceof Stream)
+    expect(res.data).toBeInstanceOf(Stream)
   })
 
   it('Set host', async function() {
@@ -66,6 +65,6 @@ describe('LocalStorage test', function() {
     const data = 'Hello, world!'
     await storage.put(key, data)
     const url = storage.resolveUrl(key)
-    assert.equal(url, 'http://localhost:8080/test.txt')
+    expect(url).toBe('http://localhost:8080/test.txt')
   })
 })
