@@ -45,11 +45,15 @@ export const bindStorage = <ModelType extends Model>({
     })
   }
 
-  const hook = async (instance: ModelType) => {
+  const onSaveHook = async (instance: ModelType) => {
     const fn = job.get(instance)
     if (fn) {
       await fn()
     }
   }
-  return { getter, setter, hook }
+  const onDestroyHook = async (instance: ModelType) => {
+    const storageKey = instance.getDataValue(column) as unknown
+    await storage.delete(storageKey as string)
+  }
+  return { getter, setter, onSaveHook, onDestroyHook }
 }

@@ -12,7 +12,7 @@ export class Post extends Model {
   public image: any
 }
 
-const { getter, setter, hook } = bindStorage<Post>({
+const { getter, setter, onSaveHook, onDestroyHook } = bindStorage<Post>({
   column: 'imageKey',
   storage,
   contentType: 'image/png',
@@ -34,5 +34,6 @@ Post.init(
   }
 )
 
-Post.afterUpdate(hook)
-Post.afterCreate(hook)
+Post.afterUpdate(onSaveHook)
+Post.afterCreate(onSaveHook)
+Post.afterDestroy(onDestroyHook)

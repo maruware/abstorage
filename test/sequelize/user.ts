@@ -15,7 +15,7 @@ export class User extends Model {
   public icon: any
 }
 
-const { getter, setter, hook } = bindStorage<User>({
+const { getter, setter, onSaveHook, onDestroyHook } = bindStorage<User>({
   column: 'iconKey',
   storage,
   contentType: 'image/jpeg',
@@ -54,5 +54,6 @@ User.init(
   }
 )
 
-User.afterUpdate(hook)
-User.afterCreate(hook)
+User.afterUpdate(onSaveHook)
+User.afterCreate(onSaveHook)
+User.afterDestroy(onDestroyHook)

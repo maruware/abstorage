@@ -59,6 +59,15 @@ class S3Storage extends BaseStorage {
     }
   }
 
+  delete(key: string) {
+    return this.service
+      .deleteObject({
+        Bucket: this.bucket,
+        Key: key
+      })
+      .promise()
+  }
+
   resolveUrl(key: string): string {
     if (this.host) {
       return `${this.host}/${key}`

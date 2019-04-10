@@ -7,6 +7,7 @@ import { Stream } from 'stream'
 
 const writeFile = util.promisify(fs.writeFile)
 const readFile = util.promisify(fs.readFile)
+const unlinkFile = util.promisify(fs.unlink)
 
 export interface LocalStorageArgs {
   dst: string
@@ -21,7 +22,7 @@ class LocalStorage extends BaseStorage {
     this.host = args.host
   }
 
-  put(key: string, body: Body, options?: any) {
+  put(key: string, body: Body) {
     const filepath = this.objectPath(key)
     mkdirp.sync(path.dirname(filepath))
     if (body instanceof Stream) {
@@ -53,6 +54,11 @@ class LocalStorage extends BaseStorage {
     } else {
       return { data: createReadStream(filePath) }
     }
+  }
+
+  delete(key: string) {
+    const filePath = this.objectPath(key)
+    return unlinkFile(filePath)
   }
 
   resolveUrl(key: string) {

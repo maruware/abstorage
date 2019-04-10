@@ -80,4 +80,19 @@ describe('Bind Sequelize test', function() {
 
     expect(user2.icon.url).toBe(iconUrl2)
   })
+
+  it('destroy', async function() {
+    const name = 'takashi'
+    const icon = createReadStream(path.join('test', 'data', 'user.jpg'))
+    let user = new User({ name, icon })
+    await user.save()
+
+    statSync(storage.objectPath(user.iconKey))
+    await user.destroy()
+
+    const s = () => {
+      statSync(storage.objectPath(user.iconKey))
+    }
+    expect(s).toThrow()
+  })
 })
