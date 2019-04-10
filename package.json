@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "prepare": "tsc",
     "postinstall": "postinstall-build dist",
     "release": "./release.sh",
     "test": "jest"
