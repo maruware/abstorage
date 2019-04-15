@@ -23,5 +23,5 @@ jobs: # a collection of steps
           name: test
           command: yarn test
       - run:
-          name: post coverage
+          name: post-coverage
           command: cat ./coverage/lcov.info | npx coveralls
