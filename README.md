@@ -1,6 +1,9 @@
 # abstorage
 
+[![CircleCI](https://circleci.com/gh/maruware/abstorage.svg?style=svg)](https://circleci.com/gh/maruware/abstorage)
+
 Abstract for storage
+
 
 ## WARNING
 Under development.
