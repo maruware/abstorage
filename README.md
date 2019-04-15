@@ -4,7 +4,10 @@
 [![Coverage Status](https://coveralls.io/repos/github/maruware/abstorage/badge.svg?branch=master)](https://coveralls.io/github/maruware/abstorage?branch=master)
 [![npm version](https://badge.fury.io/js/abstorage.svg)](https://badge.fury.io/js/abstorage)
 
-Abstract for storage
+Abstract storage (S3, Local)
+
+Inspired by [carrierwave](https://github.com/carrierwaveuploader/carrierwave) and [fog](https://github.com/fog).
+
 
 ## Usage
 
@@ -24,7 +27,7 @@ storage.put(key, data, {ContentType: 'image/jpeg'})
 storage.get(key)
 ```
 
-* Sequelize bind
+#### Sequelize bind
 
 ```ts
 import { DataTypes, Model } from 'sequelize'
