@@ -1,6 +1,7 @@
 # abstorage
 
 [![CircleCI](https://circleci.com/gh/maruware/abstorage.svg?style=svg)](https://circleci.com/gh/maruware/abstorage)
+[![Coverage Status](https://coveralls.io/repos/github/maruware/abstorage/badge.svg?branch=master)](https://coveralls.io/github/maruware/abstorage?branch=master)
 
 Abstract for storage
 
