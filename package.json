@@ -8,7 +8,7 @@
     "prepare": "tsc",
     "postinstall": "postinstall-build dist",
     "release": "./release.sh",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
     "@types/validator": "^10.9.0",
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "aws-sdk-mock": "4.3.0",
+    "coveralls": "^3.0.3",
     "eslint": "^5.15.1",
     "eslint-config-prettier": "^4.1.0",
     "eslint-config-standard": "^12.0.0",
