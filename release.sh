@@ -7,7 +7,8 @@ fi
 
 NEWVERSION=$1
 npm version $1
-git push origin master
-git push origin --tags
 npm run build
 npm publish
+
+git push origin master
+git push origin --tags
