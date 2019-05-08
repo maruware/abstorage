@@ -73,7 +73,7 @@ describe('S3Storage test', function() {
     const key = 'test.txt'
     const data = 'Hello, world!'
     await storage.put(key, data)
-    const url = storage.resolveUrl(key)
+    const url = await storage.resolveUrl(key)
     expect(url).toBe('http://my-site.example.com/test.txt')
   })
 
@@ -88,7 +88,7 @@ describe('S3Storage test', function() {
     const key = 'test.txt'
     const data = 'Hello, world!'
     await storage.put(key, data)
-    const url = storage.resolveUrl(key)
+    const url = await storage.resolveUrl(key)
     // assert.equal(url, mockUrl)
   })
 })

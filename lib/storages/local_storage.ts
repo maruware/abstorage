@@ -61,7 +61,7 @@ class LocalStorage extends BaseStorage {
     return unlinkFile(filePath)
   }
 
-  resolveUrl(key: string) {
+  async resolveUrl(key: string) {
     if (this.host) {
       return `${this.host}/${key}`
     } else {

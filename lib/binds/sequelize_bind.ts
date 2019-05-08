@@ -24,10 +24,11 @@ export const bindStorage = <ModelType extends Model>({
   resolveKey,
   preprocess
 }: BindStorageArg<ModelType>) => {
-  const getter = function(this: ModelType) {
+  const getter = async function(this: ModelType) {
     const storageKey = this.getDataValue(column) as unknown
+    const url = await storage.resolveUrl(storageKey as string)
     return {
-      url: storage.resolveUrl(storageKey as string),
+      url,
       fetchData: (options?: GetDataTypeOption<'buffer' | 'stream'>) =>
         storage.get(storageKey as string, options)
     }

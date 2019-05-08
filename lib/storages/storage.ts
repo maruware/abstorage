@@ -22,7 +22,7 @@ abstract class Storage {
     options?: GetDataTypeOption<'stream'>
   ): Promise<GetReturn<Stream>>
   abstract get(key: string, options?: GetDataTypeOption<any>): any
-  abstract resolveUrl(key: string): string
+  abstract resolveUrl(key: string): Promise<string>
 
   abstract delete(key: string): Promise<any>
 }

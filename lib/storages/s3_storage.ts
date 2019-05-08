@@ -68,13 +68,22 @@ class S3Storage extends BaseStorage {
       .promise()
   }
 
-  resolveUrl(key: string): string {
+  async resolveUrl(key: string) {
     if (this.host) {
       return `${this.host}/${key}`
     } else {
-      return this.service.getSignedUrl('getObject', {
-        Bucket: this.bucket,
-        Key: key
+      return new Promise<string>((resolve, reject) => {
+        this.service.getSignedUrl(
+          'getObject',
+          {
+            Bucket: this.bucket,
+            Key: key
+          },
+          (err, url) => {
+            if (err) reject(err)
+            else resolve(url)
+          }
+        )
       })
     }
   }

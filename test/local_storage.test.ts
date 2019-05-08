@@ -64,7 +64,7 @@ describe('LocalStorage test', function() {
     const key = 'test.txt'
     const data = 'Hello, world!'
     await storage.put(key, data)
-    const url = storage.resolveUrl(key)
+    const url = await storage.resolveUrl(key)
     expect(url).toBe('http://localhost:8080/test.txt')
   })
 })

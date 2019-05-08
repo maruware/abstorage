@@ -16,34 +16,36 @@ describe('Bind Sequelize test', function() {
   })
 
   it('no preprocess', async function() {
-    const image = readFileSync(path.join('test', 'data', 'sample.png'))
+    const imageFile = readFileSync(path.join('test', 'data', 'sample.png'))
 
-    let post = new Post({ image })
+    let post = new Post({ image: imageFile })
     await post.save()
     let findedPost = await Post.findOne()
     expect(findedPost.id).toBe(post.id)
 
     statSync(storage.objectPath(post.imageKey))
-    let { data } = await post.image.fetchData()
+    let image = await post.getImage()
+    let { data } = await image.fetchData()
 
-    expect(data.toString('base64')).toBe(image.toString('base64'))
+    expect(data.toString('base64')).toBe(imageFile.toString('base64'))
   })
 
   it('preprocess', async function() {
     const name = 'takashi'
-    const icon = readFileSync(path.join('test', 'data', 'user.jpg'))
+    const iconFile = readFileSync(path.join('test', 'data', 'user.jpg'))
 
-    let meta = await sharp(icon).metadata()
+    let meta = await sharp(iconFile).metadata()
     expect(meta.width).not.toBe(100)
 
-    let user = new User({ name, icon })
+    let user = new User({ name, icon: iconFile })
     await user.save()
     let findedUser = await User.findOne()
     expect(user.id).toBe(findedUser.id)
     expect(user.name).toBe(name)
 
     statSync(storage.objectPath(user.iconKey))
-    let { data } = await user.icon.fetchData()
+    let icon = await user.getIcon()
+    let { data } = await icon.fetchData()
 
     // exist and resized
     meta = await sharp(data).metadata()
@@ -52,39 +54,41 @@ describe('Bind Sequelize test', function() {
 
   it('stream inout', async function() {
     const name = 'takashi'
-    const icon = createReadStream(path.join('test', 'data', 'user.jpg'))
-    let user = new User({ name, icon })
+    const iconFile = createReadStream(path.join('test', 'data', 'user.jpg'))
+    let user = new User({ name, icon: iconFile })
     await user.save()
 
     statSync(storage.objectPath(user.iconKey))
 
-    let { data } = await user.icon.fetchData({ dataType: 'stream' })
+    let icon = await user.getIcon()
+    let { data } = await icon.fetchData({ dataType: 'stream' })
+
     expect(data).toBeInstanceOf(Stream)
   })
 
   it('update data', async function() {
     const name = 'takashi'
-    let icon = createReadStream(path.join('test', 'data', 'user.jpg'))
-    let user1 = new User({ name, icon })
+    let iconFile = createReadStream(path.join('test', 'data', 'user.jpg'))
+    let user1 = new User({ name, icon: iconFile })
     await user1.save()
-
-    const iconUrl1 = user1.icon.url
+    const iconUrl1 = (await user1.getIcon()).url
     statSync(storage.objectPath(user1.iconKey))
 
-    icon = createReadStream(path.join('test', 'data', 'sample.png'))
-    await user1.update({ icon })
-    const iconUrl2 = user1.icon.url
+    iconFile = createReadStream(path.join('test', 'data', 'sample.png'))
+    await user1.update({ icon: iconFile })
+
+    const iconUrl2 = (await user1.getIcon()).url
     expect(iconUrl2).not.toBe(iconUrl1)
 
     const user2 = await User.findOne({ where: { id: user1.id } })
 
-    expect(user2.icon.url).toBe(iconUrl2)
+    expect((await user2.getIcon()).url).toBe(iconUrl2)
   })
 
   it('destroy', async function() {
     const name = 'takashi'
-    const icon = createReadStream(path.join('test', 'data', 'user.jpg'))
-    let user = new User({ name, icon })
+    const iconFile = createReadStream(path.join('test', 'data', 'user.jpg'))
+    let user = new User({ name, icon: iconFile })
     await user.save()
 
     statSync(storage.objectPath(user.iconKey))
