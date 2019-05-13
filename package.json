@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/maruware/abstorage#readme",
   "dependencies": {
-    "aws-sdk": "^2.422.0",
+    "aws-sdk": "^2.453.0",
     "mkdirp": "^0.5.1",
     "postinstall-build": "^5.0.3",
     "type-fest": "^0.2.0"
@@ -37,7 +37,7 @@
     "@types/sharp": "^0.21.3",
     "@types/validator": "^10.9.0",
     "@typescript-eslint/eslint-plugin": "^1.4.2",
-    "aws-sdk-mock": "4.3.0",
+    "aws-sdk-mock": "^4.4.0",
     "coveralls": "^3.0.3",
     "eslint": "^5.15.1",
     "eslint-config-prettier": "^4.1.0",
